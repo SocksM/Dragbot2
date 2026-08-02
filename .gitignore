@@ -1,0 +1,10 @@
+# Build files
+bin/
+obj/
+/packages/
+
+# Editor
+riderModule.iml
+/_ReSharper.Caches/
+.idea
+Dragbot2.sln.DotSettings.user
