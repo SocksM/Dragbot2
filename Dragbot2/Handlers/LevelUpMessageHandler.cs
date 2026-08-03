@@ -7,7 +7,11 @@ using NetCord.Hosting.Gateway;
 
 namespace Dragbot2.Handlers;
 
-public class LevelUpMessageHandler(ILogger<LevelUpMessageHandler> logger, IOptions<LevelUpSettings> optLevelUpSettings, GatewayClient client) : IMessageCreateGatewayHandler
+public class LevelUpMessageHandler(
+    ILogger<LevelUpMessageHandler> logger,
+    IOptions<LevelUpSettings> optLevelUpSettings,
+    GatewayClient client
+) : IMessageCreateGatewayHandler
 {
     private LevelUpSettings LevelUpSettings => optLevelUpSettings.Value;
 
