@@ -1,4 +1,5 @@
-﻿using Dragbot2.Resources.AppSettings;
+﻿using Dragbot2.Caches;
+using Dragbot2.Resources.AppSettings;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NetCord;
@@ -12,7 +13,8 @@ namespace Dragbot2.Commands.CosmeticSelectionRoles;
 public class CosmeticSelectionRolesCommands(
     IOptions<CosmeticRolesSettings> optCosmeticRoleSettings,
     GatewayClient client,
-    ILogger<CosmeticSelectionRolesCommands> logger
+    ILogger<CosmeticSelectionRolesCommands> logger,
+    RoleCache roleCache
 ) : ApplicationCommandModule<ApplicationCommandContext>
 {
     private CosmeticRolesSettings CosmeticRolesSettings => optCosmeticRoleSettings.Value;
@@ -36,27 +38,31 @@ public class CosmeticSelectionRolesCommands(
         }
 
         GuildUser guildUser = await client.Rest.GetGuildUserAsync(Context.Interaction.GuildId.Value, Context.User.Id);
-        if (CosmeticRolesSettings.RequiredRoleIdForBasicColors != null)
+        if (CosmeticRolesSettings.RequiredRoleIdForBasicColors != null
+            && !guildUser.RoleIds.Contains(CosmeticRolesSettings.RequiredRoleIdForBasicColors.Value)
+           )
         {
-            if (!guildUser.RoleIds.Contains(CosmeticRolesSettings.RequiredRoleIdForBasicColors.Value))
+            await Context.Interaction.ModifyResponseAsync(msgOpts =>
             {
-                await Context.Interaction.ModifyResponseAsync(msgOpts =>
+                msgOpts.Content = $"You do not have the required role to use this command.\nRole required: <@&{CosmeticRolesSettings.RequiredRoleIdForBasicColors.Value}>";
+                msgOpts.Flags = MessageFlags.Ephemeral;
+                msgOpts.AllowedMentions = new AllowedMentionsProperties
                 {
-                    msgOpts.Content = $"You do not have the required role to use this command.\nRole required: <@&{CosmeticRolesSettings.RequiredRoleIdForBasicColors.Value}>";
-                    msgOpts.Flags = MessageFlags.Ephemeral;
-                    msgOpts.AllowedMentions = new AllowedMentionsProperties
-                    {
-                        AllowedRoles = [],
-                    };
-                });
-                return;
-            }
+                    AllowedRoles = [],
+                };
+            });
+            return;
         }
 
         List<Task<Role>> getRoleTasks = new(capacity: CosmeticRolesSettings.BasicColorRoleIds.Count);
         getRoleTasks.AddRange(
-            from roleId in CosmeticRolesSettings.BasicColorRoleIds
-            select client.Rest.GetGuildRoleAsync(Context.Interaction.GuildId.Value, roleId)
+            CosmeticRolesSettings.BasicColorRoleIds.Select(roleId =>
+                {
+                    if (roleCache.TryGetValue(roleId, out var role) && role != null)
+                        return Task.FromResult(role);
+                    return client.Rest.GetGuildRoleAsync(Context.Interaction.GuildId.Value, roleId);
+                }
+            )
         );
         await Task.WhenAll(getRoleTasks);
 

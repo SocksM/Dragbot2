@@ -1,4 +1,5 @@
-﻿using Dragbot2.Commands;
+﻿using Dragbot2.Caches;
+using Dragbot2.Commands;
 using Dragbot2.Commands.CosmeticSelectionRoles;
 using Dragbot2.Resources.AppSettings;
 using Microsoft.Extensions.Configuration;
@@ -45,7 +46,8 @@ builder.Services
     .AddComponentInteractions<RoleMenuInteraction, RoleMenuInteractionContext>()
     .AddComponentInteractions<MentionableMenuInteraction, MentionableMenuInteractionContext>()
     .AddComponentInteractions<ChannelMenuInteraction, ChannelMenuInteractionContext>()
-    .AddComponentInteractions<ModalInteraction, ModalInteractionContext>();
+    .AddComponentInteractions<ModalInteraction, ModalInteractionContext>()
+    .AddScoped<RoleCache>();
 
 var app = builder.Build();
 
