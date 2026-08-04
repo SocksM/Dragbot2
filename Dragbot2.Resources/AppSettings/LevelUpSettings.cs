@@ -3,7 +3,7 @@
 public class LevelUpSettings
 {
     public bool Enabled { get; init; } = true;
-    public Dictionary<int, ulong> LevelRoleRequirements { get; init; } = new();
+    public Dictionary<ulong, int> LevelRoleRequirements { get; init; } = new();
     public string LevelUpRegex { get; init; } = "";
     /// <summary>
     /// If there are no entries it's assumed that all channels are allowed.

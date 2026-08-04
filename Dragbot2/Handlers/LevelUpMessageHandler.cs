@@ -64,9 +64,9 @@ public class LevelUpMessageHandler(
         List<Task> addRoleTasks = [];
         addRoleTasks.AddRange(
             from roleRequirement in LevelUpSettings.LevelRoleRequirements
-            where roleRequirement.Key <= level
-            where !guildUser.RoleIds.Contains(roleRequirement.Value)
-            select client.Rest.AddGuildUserRoleAsync(guildId, guildUser.Id, roleRequirement.Value)
+            where roleRequirement.Value <= level
+            where !guildUser.RoleIds.Contains(roleRequirement.Key)
+            select client.Rest.AddGuildUserRoleAsync(guildId, guildUser.Id, roleRequirement.Key)
         );
         await Task.WhenAll(addRoleTasks);
         logger.LogInformation("Gave user {userId}, {roleCount} roles", userId, addRoleTasks.Count);
