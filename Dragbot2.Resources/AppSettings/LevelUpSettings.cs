@@ -3,6 +3,9 @@
 public class LevelUpSettings
 {
     public bool Enabled { get; init; } = true;
+    /// <summary>
+    /// key is the role, value is the level requirement
+    /// </summary>
     public Dictionary<ulong, int> LevelRoleRequirements { get; init; } = new();
     public string LevelUpRegex { get; init; } = "";
     /// <summary>

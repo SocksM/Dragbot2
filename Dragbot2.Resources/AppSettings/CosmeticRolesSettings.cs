@@ -10,4 +10,9 @@ public class CosmeticRolesSettings
     public ulong? RequiredRoleIdForBasicColors { get; init; } = null;
 
     public List<ulong> BasicColorRoleIds { get; init; } = [];
+
+    /// <summary>
+    /// key is the role that will be unlocked, value is the requirement
+    /// </summary>
+    public Dictionary<ulong, ulong> RoleRequirementColorRoles { get; init; } = [];
 }

@@ -31,4 +31,17 @@ public class GuildUserService(
         await Task.WhenAll(addRoleTasks);
         logger.LogInformation("Gave user {userId}, {roleCount} roles", userId, addRoleTasks.Count);
     }
+
+    public async Task RemoveRolesFromGuildUser(ulong guildId, ulong userId, List<ulong> roleIds)
+    {
+        if (roleIds.Count == 0) return;
+        guildUserCache.Remove(guildId, userId);
+        List<Task> removeRoleTasks = [];
+        removeRoleTasks.AddRange(
+            from roleId in roleIds
+            select client.Rest.RemoveGuildUserRoleAsync(guildId, userId, roleId)
+        );
+        await Task.WhenAll(removeRoleTasks);
+        logger.LogInformation("Removed {roleCount} roles from user {userId}", roleIds.Count, userId);
+    }
 }

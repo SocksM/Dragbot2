@@ -2,6 +2,7 @@
 using Dragbot2.Commands.CosmeticSelectionRoles;
 using Dragbot2.Resources.AppSettings;
 using Dragbot2.Services;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -47,6 +48,7 @@ builder.Services
     .AddComponentInteractions<MentionableMenuInteraction, MentionableMenuInteractionContext>()
     .AddComponentInteractions<ChannelMenuInteraction, ChannelMenuInteractionContext>()
     .AddComponentInteractions<ModalInteraction, ModalInteractionContext>()
+    .AddScoped<IMemoryCache, MemoryCache>()
     .AddScoped<RoleCache>()
     .AddScoped<GuildUserCache>()
     .AddScoped<GuildUserService>()
