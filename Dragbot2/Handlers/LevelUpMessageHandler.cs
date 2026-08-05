@@ -1,5 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using Dragbot2.Resources.AppSettings;
+using Dragbot2.Services;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NetCord.Gateway;
@@ -10,7 +11,7 @@ namespace Dragbot2.Handlers;
 public class LevelUpMessageHandler(
     ILogger<LevelUpMessageHandler> logger,
     IOptions<LevelUpSettings> optLevelUpSettings,
-    GatewayClient client
+    GuildUserService guildUserService
 ) : IMessageCreateGatewayHandler
 {
     private LevelUpSettings LevelUpSettings => optLevelUpSettings.Value;
@@ -58,17 +59,18 @@ public class LevelUpMessageHandler(
             logger.LogError("Could not find guild ID on message \"{message}\" with ID: {messageId}", message.Content, message.Id);
             return;
         }
-        var guildId = message.GuildId.Value;
-        var guildUser = await client.Rest.GetGuildUserAsync(guildId, userId);
 
-        List<Task> addRoleTasks = [];
-        addRoleTasks.AddRange(
-            from roleRequirement in LevelUpSettings.LevelRoleRequirements
-            where roleRequirement.Value <= level
-            where !guildUser.RoleIds.Contains(roleRequirement.Key)
-            select client.Rest.AddGuildUserRoleAsync(guildId, guildUser.Id, roleRequirement.Key)
+        var guildId = message.GuildId.Value;
+        var guildUser = await guildUserService.GetGuildUser(guildId, userId);
+
+        await guildUserService.AddRolesToGuildUser(
+            guildId,
+            userId,
+            LevelUpSettings.LevelRoleRequirements
+                .Where(roleRequirement => roleRequirement.Value <= level)
+                .Where(roleRequirement => !guildUser.RoleIds.Contains(roleRequirement.Key))
+                .Select(roleRequirement => roleRequirement.Key)
+                .ToList()
         );
-        await Task.WhenAll(addRoleTasks);
-        logger.LogInformation("Gave user {userId}, {roleCount} roles", userId, addRoleTasks.Count);
     }
 }
