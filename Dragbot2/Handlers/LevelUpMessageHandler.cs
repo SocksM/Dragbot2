@@ -18,6 +18,7 @@ public class LevelUpMessageHandler(
 
     public async ValueTask HandleAsync(Message message)
     {
+        if (!LevelUpSettings.Enabled) return;
         if (
             LevelUpSettings.AllowedChannelIds.Count != 0
             && !LevelUpSettings.AllowedChannelIds.Contains(message.ChannelId)
