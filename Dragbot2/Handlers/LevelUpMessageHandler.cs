@@ -23,7 +23,7 @@ public class LevelUpMessageHandler(ILogger<LevelUpMessageHandler> logger, IOptio
 
         Match match = Regex.Match(message.Content, LevelUpSettings.LevelUpRegex);
         if (!match.Success) return;
-        logger.LogInformation("Received level up message, content: {content}", message.Content);
+        logger.LogInformation("Received level up message with ID: {messageId}, content: {content}", message.Id, message.Content);
 
         var userIdParseSuccess =
             ulong.TryParse(
@@ -39,13 +39,13 @@ public class LevelUpMessageHandler(ILogger<LevelUpMessageHandler> logger, IOptio
         switch (userIdParseSuccess, levelParseSuccess)
         {
             case (false, false):
-                logger.LogError("Could not parse user ID and level from level up message: {message}", message);
+                logger.LogError("Could not parse user ID and level from level up message with ID: {messageId}, content: {content}", message.Id, message.Content);
                 return;
             case (false, true):
-                logger.LogError("Could not parse user ID from level up message: {message}", message);
+                logger.LogError("Could not parse user ID from level up message with ID: {messageId}, content: {content}", message.Id, message.Content);
                 return;
             case (true, false):
-                logger.LogError("Could not parse level from level up message: {message}", message);
+                logger.LogError("Could not parse level from level up message with ID: {messageId}, content: {content}", message.Id, message.Content);
                 return;
         }
 
