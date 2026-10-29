@@ -54,7 +54,7 @@ public class ColorRoleMenuModule(
             bool parseSuccess = ulong.TryParse(selectedValue, out ulong id);
             if (!parseSuccess)
             {
-                logger.LogError("A ulong.TryParse failed for the selected value: {selectedValue}", selectedValue);
+                logger.LogError("An ulong.TryParse failed for the selected value: {selectedValue}", selectedValue);
                 await Context.Interaction.ModifyResponseAsync(msgOpts =>
                 {
                     msgOpts.Content = "Something went wrong when trying to figure out which roles you had selected";
@@ -65,7 +65,7 @@ public class ColorRoleMenuModule(
 
             if (!allowedRoleIds.Contains(id))
             {
-                logger.LogWarning("A dissallowed role was passed to a color role menu selection module, roleId: {roleId}, by userId {userId}",
+                logger.LogWarning("A disallowed role was passed to a color role menu selection module, roleId: {roleId}, by userId {userId}",
                     selectedValue, Context.User.Id);
                 await Context.Interaction.ModifyResponseAsync(msgOpts => { });
                 return HasDisallowedRolesSelectedResult.True;
