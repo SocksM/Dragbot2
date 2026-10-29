@@ -29,30 +29,29 @@ builder.Services.Configure<LevelUpSettings>(appSettingsSection.GetSection(nameof
 builder.Services.Configure<DiscordSettings>(appSettingsSection.GetSection(nameof(AppSettings.DiscordSettings)));
 builder.Services.Configure<CosmeticRolesSettings>(appSettingsSection.GetSection(nameof(AppSettings.CosmeticRolesSettings)));
 
-builder.Services
-    .AddDiscordGateway(settings =>
-    {
-        settings.Token = appSettings.DiscordSettings.BotToken;
-        settings.Intents =
-            GatewayIntents.MessageContent |
-            GatewayIntents.GuildMessages |
-            GatewayIntents.DirectMessages |
-            0;
-    })
-    .AddGatewayHandlers(typeof(Program).Assembly)
-    .AddApplicationCommands()
-    .AddComponentInteractions<ButtonInteraction, ButtonInteractionContext>()
-    .AddComponentInteractions<StringMenuInteraction, StringMenuInteractionContext>()
-    .AddComponentInteractions<UserMenuInteraction, UserMenuInteractionContext>()
-    .AddComponentInteractions<RoleMenuInteraction, RoleMenuInteractionContext>()
-    .AddComponentInteractions<MentionableMenuInteraction, MentionableMenuInteractionContext>()
-    .AddComponentInteractions<ChannelMenuInteraction, ChannelMenuInteractionContext>()
-    .AddComponentInteractions<ModalInteraction, ModalInteractionContext>()
-    .AddScoped<IMemoryCache, MemoryCache>()
-    .AddScoped<RoleCache>()
-    .AddScoped<GuildUserCache>()
-    .AddScoped<GuildUserService>()
-    .AddScoped<RoleService>();
+builder.Services.AddDiscordGateway(settings =>
+{
+    settings.Token = appSettings.DiscordSettings.BotToken;
+    settings.Intents =
+        GatewayIntents.MessageContent |
+        GatewayIntents.GuildMessages |
+        GatewayIntents.DirectMessages |
+        0;
+});
+builder.Services.AddGatewayHandlers(typeof(Program).Assembly);
+builder.Services.AddApplicationCommands();
+builder.Services.AddComponentInteractions<ButtonInteraction, ButtonInteractionContext>();
+builder.Services.AddComponentInteractions<StringMenuInteraction, StringMenuInteractionContext>();
+builder.Services.AddComponentInteractions<UserMenuInteraction, UserMenuInteractionContext>();
+builder.Services.AddComponentInteractions<RoleMenuInteraction, RoleMenuInteractionContext>();
+builder.Services.AddComponentInteractions<MentionableMenuInteraction, MentionableMenuInteractionContext>();
+builder.Services.AddComponentInteractions<ChannelMenuInteraction, ChannelMenuInteractionContext>();
+builder.Services.AddComponentInteractions<ModalInteraction, ModalInteractionContext>();
+builder.Services.AddScoped<IMemoryCache, MemoryCache>();
+builder.Services.AddScoped<RoleCache>();
+builder.Services.AddScoped<GuildUserCache>();
+builder.Services.AddScoped<GuildUserService>();
+builder.Services.AddScoped<RoleService>();
 
 var app = builder.Build();
 

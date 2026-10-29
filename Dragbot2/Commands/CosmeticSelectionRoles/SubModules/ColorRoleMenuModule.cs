@@ -67,7 +67,7 @@ public class ColorRoleMenuModule(
             {
                 logger.LogWarning("A disallowed role was passed to a color role menu selection module, roleId: {roleId}, by userId {userId}",
                     selectedValue, Context.User.Id);
-                await Context.Interaction.ModifyResponseAsync(msgOpts => { });
+                await Context.Interaction.ModifyResponseAsync(_ => { });
                 return HasDisallowedRolesSelectedResult.True;
             }
         }
