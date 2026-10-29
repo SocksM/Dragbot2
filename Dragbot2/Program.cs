@@ -24,10 +24,12 @@ if (appSettings == null) throw new Exception("AppSettings not found");
 var levelUpSetting = appSettings.LevelUpSettings;
 var discordSettings = appSettings.DiscordSettings;
 var cosmeticRolesSettings = appSettings.CosmeticRolesSettings;
+var honeyPotChannelSettings = appSettings.HoneypotChannelSettings;
 builder.Services.Configure<AppSettings>(appSettingsSection);
 builder.Services.Configure<LevelUpSettings>(appSettingsSection.GetSection(nameof(AppSettings.LevelUpSettings)));
 builder.Services.Configure<DiscordSettings>(appSettingsSection.GetSection(nameof(AppSettings.DiscordSettings)));
 builder.Services.Configure<CosmeticRolesSettings>(appSettingsSection.GetSection(nameof(AppSettings.CosmeticRolesSettings)));
+builder.Services.Configure<HoneypotChannelSettings>(appSettingsSection.GetSection(nameof(AppSettings.HoneypotChannelSettings)));
 
 builder.Services.AddDiscordGateway(settings =>
 {
