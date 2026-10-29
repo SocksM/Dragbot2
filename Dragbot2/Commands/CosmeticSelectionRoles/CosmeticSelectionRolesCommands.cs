@@ -29,6 +29,16 @@ public class CosmeticSelectionRolesCommands(
     {
         await Context.Interaction.SendResponseAsync(InteractionCallback.DeferredMessage(MessageFlags.Ephemeral));
 
+        if (!CosmeticRolesSettings.Enabled)
+        {
+            await Context.Interaction.ModifyResponseAsync(msgOpts =>
+            {
+                msgOpts.Content = "Cosmetic role selection is disabled.";
+                msgOpts.Flags = MessageFlags.Ephemeral;
+            });
+            return;
+        }
+
         if (!Context.Interaction.GuildId.HasValue)
         {
             await InteractionContextUtils.CouldntFindGuildInContext(logger, Context);
@@ -80,6 +90,16 @@ public class CosmeticSelectionRolesCommands(
     public async Task LevelColorSelection()
     {
         await Context.Interaction.SendResponseAsync(InteractionCallback.DeferredMessage(MessageFlags.Ephemeral));
+
+        if (!CosmeticRolesSettings.Enabled)
+        {
+            await Context.Interaction.ModifyResponseAsync(msgOpts =>
+            {
+                msgOpts.Content = "Cosmetic role selection is disabled.";
+                msgOpts.Flags = MessageFlags.Ephemeral;
+            });
+            return;
+        }
 
         if (!Context.Interaction.GuildId.HasValue)
         {
