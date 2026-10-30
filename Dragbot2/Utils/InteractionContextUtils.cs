@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using NetCord;
+﻿using NetCord;
 using NetCord.Services;
 
 namespace Dragbot2.Utils;

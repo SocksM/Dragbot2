@@ -2,7 +2,6 @@
 using Dragbot2.Resources.AppSettings;
 using Dragbot2.Services;
 using Dragbot2.Utils;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NetCord;
 using NetCord.Rest;

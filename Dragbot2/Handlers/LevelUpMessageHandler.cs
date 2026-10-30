@@ -1,7 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using Dragbot2.Resources.AppSettings;
 using Dragbot2.Services;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NetCord.Gateway;
 using NetCord.Hosting.Gateway;

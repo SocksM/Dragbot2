@@ -1,5 +1,4 @@
 ﻿using Dragbot2.Caches;
-using Microsoft.Extensions.Logging;
 using NetCord;
 using NetCord.Gateway;
 
