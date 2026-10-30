@@ -38,8 +38,11 @@ builder.Services.AddDiscordGateway(settings =>
         GatewayIntents.DirectMessages |
         0;
 });
+
 builder.Services.AddGatewayHandlers(typeof(Program).Assembly);
+
 builder.Services.AddApplicationCommands();
+
 builder.Services.AddComponentInteractions<ButtonInteraction, ButtonInteractionContext>();
 builder.Services.AddComponentInteractions<StringMenuInteraction, StringMenuInteractionContext>();
 builder.Services.AddComponentInteractions<UserMenuInteraction, UserMenuInteractionContext>();
@@ -47,6 +50,7 @@ builder.Services.AddComponentInteractions<RoleMenuInteraction, RoleMenuInteracti
 builder.Services.AddComponentInteractions<MentionableMenuInteraction, MentionableMenuInteractionContext>();
 builder.Services.AddComponentInteractions<ChannelMenuInteraction, ChannelMenuInteractionContext>();
 builder.Services.AddComponentInteractions<ModalInteraction, ModalInteractionContext>();
+
 builder.Services.AddScoped<IMemoryCache, MemoryCache>();
 builder.Services.AddScoped<RoleCache>();
 builder.Services.AddScoped<GuildUserCache>();
