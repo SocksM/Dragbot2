@@ -13,7 +13,6 @@ namespace Dragbot2.Commands.CosmeticSelectionRoles;
 [SlashCommand("cosmetic-roles", "Select cosmetic roles")]
 public class CosmeticSelectionRolesCommands(
     IOptions<CosmeticRolesSettings> optCosmeticRolesSettings,
-    GatewayClient client,
     ILogger<CosmeticSelectionRolesCommands> logger,
     RoleService roleService,
     GuildUserService guildUserService
@@ -107,7 +106,7 @@ public class CosmeticSelectionRolesCommands(
             return;
         }
 
-        GuildUser guildUser = await client.Rest.GetGuildUserAsync(Context.Interaction.GuildId.Value, Context.User.Id);
+        GuildUser guildUser = await guildUserService.GetGuildUser(Context.Interaction.GuildId.Value, Context.User.Id);
         Dictionary<ulong, ulong> acquiredUserRequirementRoles = GetAllowedRoleRequirementColorRoles(guildUser);
         if (acquiredUserRequirementRoles.Count == 0)
         {
